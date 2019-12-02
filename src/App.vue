@@ -1,63 +1,35 @@
 <template>
   <div class="corpo">
+    <meu-menu></meu-menu>
 
-    <h1 class="titulo">{{ titulo }}</h1>
-
-    <ul class="lista-fotos">
-      <li class="lista-fotos-item" v-for="foto in fotos">
-
-        <meu-painel :titulo="foto.titulo">
-          <img class="imagem-responsiva" :src="foto.url" :alt="foto.titulo">
-        </meu-painel>
-      </li>
-    </ul>
-
+    <transition name="pagina-fade">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-import Painel from './components/shared/painel/Painel';
+import Menu from './components/shared/menu/Menu.vue';
 
 export default {
   components: {
-    'meu-painel': Painel
-  },
-
-  name: 'App',
-  data () {
-    return {
-      titulo: "AluraPic",
-      fotos: []
-    }
-  },
-  created() {
-    this.$http.get("http://localhost:3000/v1/fotos")
-    .then(resp => resp.json())
-    .then(fotos => {this.fotos = fotos})
+    'meu-menu': Menu
   }
 }
 </script>
 
-<style>
-.titulo {
-    text-align: center;
-  }
-
+<style scoped>
   .corpo {
     font-family: Helvetica, sans-serif;
     margin: 0 auto;
     width: 96%;
   }
 
-  .lista-fotos {
-    list-style: none;
+  .pagina-fade-enter, .pagina-fade-leave-active {
+    opacity: 0;
   }
 
-  .lista-fotos .lista-fotos-item {
-    display: inline-block;
-  }
-
-  .imagem-responsiva {
-    width: 100%;
+  .pagina-fade-enter-active, .pagina-fade-leave-active {
+    transition: opacity 500ms;
   }
 </style>
